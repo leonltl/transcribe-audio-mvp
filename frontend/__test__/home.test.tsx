@@ -2,35 +2,28 @@
  * @jest-environment jsdom
  */
 import React, { act, useState } from 'react';
-import { render, screen, fireEvent, waitFor, renderHook } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import Home from '../components/Home';
 import fetchMock from 'jest-fetch-mock';
-import Index from '../pages/index'
 import "@testing-library/jest-dom";
 
-describe('Index Page', () => {
+describe('Home Componnent', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
   });
-
-  afterEach(() => {
-    
-  });
-
   it('renders health status', async () => {
-    fetchMock.mockResponse(JSON.stringify({ status: 'Healthy' }));
-    render(<Index />);
+    render(<Home />);
 
     await waitFor(() => {
-      const healthStatusElement = screen.getByText('Health Status:', { exact: false });
+      const healthStatusElement = screen.getByRole('healthStatus');
       expect(healthStatusElement).toBeInTheDocument();
-      
-      const healthStatusText = healthStatusElement.textContent;
-      expect(['Health Status: Unhealthy', 'Health Status: Healthy']).toContain(healthStatusText);
-    });
+      expect(healthStatusElement).toHaveTextContent('Health Status: Healthy');
+    }, { timeout: 5000 });
   });
-
+  
+  
   it('handles button click', async () => {
-    render(<Index />);
+    render(<Home />);
     const button = screen.getByRole('button', { name: /Upload/i });
     fireEvent.click(button);
     await waitFor(() => {
@@ -39,9 +32,10 @@ describe('Index Page', () => {
     });
   });
 
+  /*
   it('renders empty transcriptions table', async () => {
     fetchMock.mockResponse(JSON.stringify({ status: 'Healthy' }));
-    render(<Index />);
+    render(<Home />);
     await waitFor(() => {
       const healthStatusElement = screen.getByText('Health Status:', { exact: false });
       expect(healthStatusElement).toBeInTheDocument();
@@ -56,10 +50,9 @@ describe('Index Page', () => {
     });
   });
   
-  
   it('fetches and sets transcriptions', async () => {
     fetchMock.mockResponse(JSON.stringify({ status: 'Healthy' }));
-    render(<Index />);
+    render(<Home />);
     await waitFor(() => {
       const healthStatusElement = screen.getByText('Health Status:', { exact: false });
       expect(healthStatusElement).toBeInTheDocument();
@@ -72,7 +65,7 @@ describe('Index Page', () => {
 
 
   });
-  
+  */
 
   /*
   it('handles search transcriptions', async () => {

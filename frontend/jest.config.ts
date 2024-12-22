@@ -20,7 +20,7 @@ const config: Config = {
 
   // The directory where Jest should store its cached dependency information
   // cacheDirectory: "/private/var/folders/tc/dt_mwfxx1wzcs3fhr8dst5vw0000gp/T/jest_dy",
-
+  
   // Automatically clear mock calls, instances, contexts and results before every test
   clearMocks: true,
 
@@ -73,15 +73,21 @@ const config: Config = {
   // globalTeardown: undefined,
 
   // A set of global variables that need to be available in all test environments
-  // globals: {},
+  globals: {
+    fetch: globalThis.fetch,
+    Response: globalThis.Response,
+    TextEncoder: TextEncoder,
+    TransformStream: TransformStream,
+    BroadcastChannel: BroadcastChannel,
+  },
 
   // The maximum amount of workers used to run your tests. Can be specified as % or a number. E.g. maxWorkers: 10% will use 10% of your CPU amount + 1 as the maximum worker number. maxWorkers: 2 will use a maximum of 2 workers.
   // maxWorkers: "50%",
 
   // An array of directory names to be searched recursively up from the requiring module's location
-  // moduleDirectories: [
-  //   "node_modules"
-  // ],
+  moduleDirectories: [
+     "node_modules"
+  ],
 
   // An array of file extensions your modules use
   // moduleFileExtensions: [
@@ -143,7 +149,7 @@ const config: Config = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  // setupFilesAfterEnv: [],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
@@ -152,10 +158,12 @@ const config: Config = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: "jsdom",
-
-  // Options that will be passed to the testEnvironment
-  // testEnvironmentOptions: {},
+  testEnvironment: 'jest-fixed-jsdom',
+  
+  // Options that will be passed to the testEnvironment  
+  testEnvironmentOptions: {
+    customExportConditions: [],
+  },
 
   // Adds a location field to test results
   // testLocationInResults: false,
@@ -172,7 +180,7 @@ const config: Config = {
   // ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
-  // testRegex: [],
+  //testRegex: ['(/__tests__/.*|(\\.|/)test)\\.[jt]sx?$'],
 
   // This option allows the use of a custom results processor
   // testResultsProcessor: undefined,
