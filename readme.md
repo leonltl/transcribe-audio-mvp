@@ -2,18 +2,18 @@
 # Project Name
 
 ## Overview
-This project consists of a frontend built with Next.js and a backend built with Flask. The services are containerized using Docker and orchestrated with Docker Compose.
+The assignment is built using NextJS as the frontend service and Flask Framework for the backend service. The services are containerized using Docker and orchestrated with Docker Compose. The main aim of the assignment is to allow uploading of Audio (in mp3 format) and display the transcript of the audio. For simplicity sake, the database used to store the transcript is Sqlite that is created in the backend service. 
 
 ## Project Structure
 
 ## Backend
-The backend is a Flask application.
+The backend built using Flash Framework
 
 ### Files
-- `database.py`: Handles database interactions.
+- `database.py`: Handles database interactions and initialise the Sqlite.
 - `server.py`: Main server file to run the Flask application.
 - `server_test.py`: Contains tests for the server.
-- `transcribe.py`: Handles transcription logic.
+- `transcribe.py`: Handles transcription and processing logic.
 - `requirements.txt`: Lists the Python dependencies.
 - `flask.dockerfile`: Dockerfile for building the backend container.
 
