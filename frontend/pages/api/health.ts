@@ -14,7 +14,7 @@ export default async function handler(
     const data: { status: string } = await fetch(`${url}/health`).then(res => res.json());
     const { status } = data;
     res.status(200).json({ status });
-  } catch (error) {
+  } catch {
     res.status(200).json({ status: "Unhealthy" });
   }
 }

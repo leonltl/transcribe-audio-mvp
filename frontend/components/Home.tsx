@@ -25,7 +25,6 @@ const Home: React.FC = () => {
   const language: string = 'en'
 
   const [errorMessage, setError] = useState('');
-  const url = `http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/api`
 
   const fetchHealth = async () => {
       const data: { status: string } = await fetch(`/api/health`).then(res => res.json());

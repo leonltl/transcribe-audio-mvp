@@ -1,5 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { tr } from "framer-motion/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type TranscriptionData = {
@@ -35,7 +33,7 @@ export default async function handler(
     }));
 
     res.status(200).json(transcriptions);
-  } catch (error) {
+  } catch {
     const transcriptions: Transcription[] = [];
     res.status(500).json(transcriptions);
   }

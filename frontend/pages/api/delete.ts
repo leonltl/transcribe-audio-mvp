@@ -38,7 +38,7 @@ export default async function handler(
     }
 
     res.status(200).json({ message: 'File deleted successfully' });
-  } catch (error) {
+  } catch {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
