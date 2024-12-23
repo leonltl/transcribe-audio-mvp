@@ -1,11 +1,11 @@
 # Base image
 FROM node:18
 
-ENV SERVER_HOST=localhost
-ENV SERVER_PORT=8080
-
 # Create app directory
 WORKDIR /app
+
+# Expose the port on which the app will run
+EXPOSE 3000
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
@@ -16,11 +16,12 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-# Creates a "dist" folder with the production build
+# Remove .env file if it exists
+RUN rm -f .env
 RUN npm run build
 
-# Expose the port on which the app will run
-EXPOSE 3000
+ENV NODE_ENV=production
+RUN npm ci
 
 # Start the server using the production build
 CMD ["npm", "run", "start"]

@@ -1,6 +1,3 @@
-
-# Project Name
-
 ## Overview
 The assignment is built using NextJS as the frontend service and Flask Framework for the backend service. The services are containerized using Docker and orchestrated with Docker Compose. The main aim of the assignment is to allow uploading of Audio (in mp3 format) and display the transcript of the audio. For simplicity sake, the database used to store the transcript is Sqlite that is created in the backend service. 
 
@@ -66,7 +63,7 @@ To run the unit tests for the backend service:
 ### Running the Backend using Docker
 To run the backend service:
 ```sh
-docker-compose up backend
+docker compose up backend
 ```
 
 ## Frontend

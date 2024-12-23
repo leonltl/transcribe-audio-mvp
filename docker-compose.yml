@@ -9,8 +9,8 @@ services:
     ports:
       - 3000:3000
     environment:
-      - SERVER_HOST=localhost
-      - SERVER_POST=8080
+      - SERVER_HOST=host.docker.internal
+      - SERVER_PORT=8080
     depends_on:
       - backend
 
