@@ -100,8 +100,10 @@ const Home: React.FC = () => {
     });
 
     if (!response.ok) {
-      const message = await response.json();
-      setError(message.error);
+      const data: { error: string }  = await response.json();
+      const { error } = data;
+      setError(error);
+      return;
     }
 
     fetchTranscriptions();
@@ -125,29 +127,32 @@ const Home: React.FC = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="border rounded py-2 px-4"
-            role="Upload"
+            role="SearchField"
               />
             <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
-              onClick={searchTranscriptions}>
+              onClick={searchTranscriptions} role="Search">
               Search
             </button>
             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2"
-              onClick={clearSearch}>
+              onClick={clearSearch} role="Clear">
               Clear
             </button>
         </div>
-        <div>
+        <div role="UploadContainer">
           <input
               type="file"
               accept="audio/*"
               id="audio-upload"
               style={{ display: 'none' }}
-              onChange={(e) => uploadTranscript(e.target.files)}
+              onChange={(e) => uploadTranscript(e.target.files)} 
+              role='UploadAudioInput'
+              aria-label='UploadAudioInput'
           />
           <label htmlFor="audio-upload">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => document.getElementById('audio-upload')?.click()}
               disabled={isUploading}
+              role="Upload"
             >
               {isUploading ? 'Uploading...' : 'Upload Audio'}
             </button>

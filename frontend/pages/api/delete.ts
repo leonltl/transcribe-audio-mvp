@@ -17,12 +17,12 @@ export default async function handler(
 ) {
   const { filename } = req.query;
   if (!filename || typeof filename !== 'string') {
-    res.status(400).json({ "error": 'Invalid search query' });
+    res.status(400).json({ error: 'Invalid search query' });
     return;
   }
 
   if (req.method !== 'DELETE') {
-    res.status(405).json({"error": "Method not allowed for File Deletion"});
+    res.status(405).json({error: "Method not allowed for File Deletion"});
     return;
   }
 

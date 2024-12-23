@@ -75,6 +75,7 @@ const config: Config = {
   // A set of global variables that need to be available in all test environments
   globals: {
     fetch: globalThis.fetch,
+    Request: globalThis.Request,
     Response: globalThis.Response,
     TextEncoder: TextEncoder,
     TransformStream: TransformStream,

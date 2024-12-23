@@ -1,19 +1,13 @@
-/**
- * @jest-environment jsdom
- */
-import React, { act, useState } from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import Home from '../components/Home';
-import fetchMock from 'jest-fetch-mock';
 import "@testing-library/jest-dom";
 
 describe('Home Componnent', () => {
   beforeEach(() => {
-    fetchMock.resetMocks();
   });
-  it('renders health status', async () => {
-    render(<Home />);
 
+  it('mock renders health status', async () => {
+    render(<Home />);
     await waitFor(() => {
       const healthStatusElement = screen.getByRole('healthStatus');
       expect(healthStatusElement).toBeInTheDocument();
@@ -22,97 +16,113 @@ describe('Home Componnent', () => {
   });
   
   
-  it('handles button click', async () => {
+  it('mock renders empty transcriptions table', async () => {
     render(<Home />);
-    const button = screen.getByRole('button', { name: /Upload/i });
-    fireEvent.click(button);
+    await waitFor(() => {
+        const noRowsElement = screen.getByText('No rows to display.');
+        if (noRowsElement != null)  {
+          expect(screen.getByText('No rows to display.')).toBeInTheDocument();
+        } 
+    });
+  });
+  
+  it('mock renders transcriptions with data', async () => {
+    render(<Home />);
+    await waitFor(() => {
+      expect(screen.getByText('sample1.mp3')).toBeInTheDocument();
+      expect(screen.getByText('sample2.mp3')).toBeInTheDocument();
+    });
+  });
+
+  it('mock renders upload button', async () => {
+    render(<Home />);
     await waitFor(() => {
       const resultElement = screen.getByText('Upload Audio');
       expect(resultElement).toBeInTheDocument();
     });
   });
 
-  /*
-  it('renders empty transcriptions table', async () => {
-    fetchMock.mockResponse(JSON.stringify({ status: 'Healthy' }));
+  it('mock renders search button', async () => {
     render(<Home />);
     await waitFor(() => {
-      const healthStatusElement = screen.getByText('Health Status:', { exact: false });
-      expect(healthStatusElement).toBeInTheDocument();
-      
-      const healthStatusText = healthStatusElement.textContent;
-      if (healthStatusText?.includes('Health Status')) {
-        const noRowsElement = screen.getByText('No rows to display.');
-        if (noRowsElement != null)  {
-          expect(screen.getByText('No rows to display.')).toBeInTheDocument();
-        } 
-      }
+      const resultElement = screen.getByText('Search');
+      expect(resultElement).toBeInTheDocument();
     });
   });
-  
-  it('fetches and sets transcriptions', async () => {
-    fetchMock.mockResponse(JSON.stringify({ status: 'Healthy' }));
+
+  it('mock renders search field', async () => {
     render(<Home />);
     await waitFor(() => {
-      const healthStatusElement = screen.getByText('Health Status:', { exact: false });
-      expect(healthStatusElement).toBeInTheDocument();
-      expect(healthStatusElement).toHaveTextContent('Healthy');
+      const resultElement = screen.getByPlaceholderText('Search Filename');
+      expect(resultElement).toBeInTheDocument();
     });
-
-    await waitFor(() => {
-      expect(screen.getByText('en')).toBeInTheDocument();
-    });
-
-
   });
-  */
 
-  /*
-  it('handles search transcriptions', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify({ status: 'Healthy' }));
-    fetchMock.mockResponseOnce(JSON.stringify([
-      { filename: 'searchfile.mp3', transcript: 'Search Transcript', language: 'en', created_at: '2023-01-01' }
-    ]));
-    render(<Index />);
+  it('mock renders clear button', async () => {
+    render(<Home />);
+    await waitFor(() => {
+      const resultElement = screen.getByText('Clear');
+      expect(resultElement).toBeInTheDocument();
+    });
+  });
+
+  it('mock handles search button', async () => {
+    render(<Home />);
     const searchInput = screen.getByPlaceholderText('Search Filename');
-    fireEvent.change(searchInput, { target: { value: 'searchfile' } });
+    fireEvent.change(searchInput, { target: { value: 'sample1.mp3' } });
     const searchButton = screen.getByText('Search');
     fireEvent.click(searchButton);
     await waitFor(() => {
-      expect(screen.getByText('searchfile.mp3')).toBeInTheDocument();
+      expect(screen.getByText('sample1.mp3')).toBeInTheDocument();
     });
   });
-
-  it('handles clear search', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify({ status: 'Healthy' }));
-    fetchMock.mockResponseOnce(JSON.stringify([
-      { filename: 'file1.mp3', transcript: 'Transcript 1', language: 'en', created_at: '2023-01-01' }
-    ]));
-    render(<Index />);
-    const searchInput = screen.getByPlaceholderText('Search Filename');
-    fireEvent.change(searchInput, { target: { value: 'searchfile' } });
+  
+  it('mock handles clear button', async () => {
+    render(<Home />);
     const clearButton = screen.getByText('Clear');
     fireEvent.click(clearButton);
     await waitFor(() => {
-      expect(screen.getByText('file1.mp3')).toBeInTheDocument();
+      expect(screen.getByText('sample1.mp3')).toBeInTheDocument();
+    });
+  });
+  
+  it('mock handles delete action', async () => {
+    render(<Home />);
+    await waitFor(() => {
+      expect(screen.getByText('sample2.mp3')).toBeInTheDocument();
+    });
+
+    const sample2Row = screen.getByText('sample2.mp3').closest('tr');
+    const deleteButton = sample2Row?.querySelector('button[aria-label="Delete"]');
+    if (deleteButton) {
+      fireEvent.click(deleteButton);
+    }
+
+    await waitFor(() => {
+      expect(screen.queryByText('sample2.mp3')).not.toBeInTheDocument();
     });
   });
 
-  it('handles delete action', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify({ status: 'Healthy' }));
-    fetchMock.mockResponseOnce(JSON.stringify([
-      { filename: 'file1.mp3', transcript: 'Transcript 1', language: 'en', created_at: '2023-01-01' }
-    ]));
-    fetchMock.mockResponseOnce(JSON.stringify({}));
-    render(<Index />);
+  
+  it('mock handles upload action', async () => {
+    render(<Home />);
+    const uploadContainer = screen.getByRole('UploadContainer');
+    expect(uploadContainer).toBeInTheDocument();
+
+    const str = JSON.stringify('Sample3.mp3');
+    const blob = new Blob([str]);
+
+    const file = new File([new Blob([blob], { type: 'audio/mp3' })], 'sample3.mp3', { type: 'audio/mp3' });
+    const input = uploadContainer.querySelector('input[aria-label="UploadAudioInput"]');
+    expect(input).toBeInTheDocument();
+    if (input) {
+      fireEvent.change(input, { target: { files: [file] } });     
+    }
+
     await waitFor(() => {
-      expect(screen.getByText('file1.mp3')).toBeInTheDocument();
-    });
-    const deleteButton = screen.getByText('Delete?');
-    fireEvent.click(deleteButton);
-    await waitFor(() => {
-      expect(screen.queryByText('file1.mp3')).not.toBeInTheDocument();
-    });
+      expect(screen.getByText('sample3.mp3')).toBeInTheDocument();
+    }, { timeout: 5000 });
   });
-  */
+  
+  
 });

@@ -102,7 +102,7 @@ const CommonTable: React.FC<TableProps> = ({ rows, columns, onDelete }) => {
                         {(columnKey) => (
                               <TableCell>
                               {columnKey === 'action' ? (
-                                  <button onClick={() => onDelete(item)}>
+                                  <button onClick={() => onDelete(item)} role='Delete' aria-label='Delete'>
                                       <span className="text-lg text-danger cursor-pointer active:opacity-50">
                                           <DeleteIcon />
                                       </span>
