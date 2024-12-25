@@ -57,7 +57,7 @@ To run the unit tests for the backend service:
 
 2. Run the tests using the following command:
     ```sh
-    python server_test.py
+    python -m unittest discover -s . -p '*_test.py'
     ```
 
 ### Running the Backend using Docker

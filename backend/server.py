@@ -26,10 +26,10 @@ def transcribe():
         language = 'en'
 
     # Search for existing transcriptions with the same filename
-    #results = search_transcriptions(filename)   
-    #if results:
+    results = search_transcriptions(filename)   
+    if results:
         # Return the filename and transcript as a JSON response
-        #return jsonify({'error': 'filename exists'}), 500 
+        return jsonify({'error': 'filename exists'}), 500 
     
     try:
         # Transcribe the audio file
@@ -39,7 +39,7 @@ def transcribe():
         return jsonify({'error': str(e)}), 500
 
     # Save the new transcription if no existing transcription is found
-    #save_transcription(filename, transcript, language)
+    save_transcription(filename, transcript, language)
 
     # Return the filename and transcript as a JSON response
     return jsonify({'filename': filename, 'transcript': transcript, 'language': language}), 200

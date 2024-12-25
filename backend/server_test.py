@@ -12,7 +12,7 @@ class BackendAppTestCase(unittest.TestCase):
     def test_health(self, mock_load_database):
         response = self.app.get('/api/health')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json, {'status': 'Service is up and running!'})
+        self.assertEqual(response.json, {'status': 'Healthy'})
 
     @patch('server.save_transcription')
     def test_transcribe(self, mock_save_transcription):
