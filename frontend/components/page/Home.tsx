@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import CommonTable, { Column } from './CommonTable';
+import CommonTable, { Column } from '../common/CommonTable';
 
 const Home: React.FC = () => {
   interface Transcription {

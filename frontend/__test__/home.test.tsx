@@ -1,5 +1,5 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import Home from '../components/Home';
+import Home from '../components/page/Home';
 import "@testing-library/jest-dom";
 
 describe('Home Componnent', () => {
