@@ -21,6 +21,10 @@ services:
     build:
       context: ./backend
       dockerfile: flask.dockerfile
+    environment:
+      - DATABASE_URL=sqlite:///data/transcription.db
+    volumes:
+      - ./data:/app/data/
     ports:
       - 8080:8080
     

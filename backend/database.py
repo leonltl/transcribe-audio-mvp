@@ -1,10 +1,15 @@
 
 import sqlite3
-DATABASE_NAME = 'transcription.db'
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///data/transcription.db')
 
 def load_database():
     # Connect to the SQLite database
-    conn = sqlite3.connect(DATABASE_NAME)
+    print(DATABASE_URL.split('sqlite:///')[-1])
+    conn = sqlite3.connect(DATABASE_URL.split('sqlite:///')[-1])
     c = conn.cursor()
     try:
         # Create the transcriptions table if it doesn't exist
@@ -25,7 +30,8 @@ def load_database():
 
 def save_transcription(filename, transcript, language="en"):
     # Connect to the SQLite database
-    conn = sqlite3.connect(DATABASE_NAME)
+    print(DATABASE_URL.split('sqlite:///')[-1])
+    conn = sqlite3.connect(DATABASE_URL.split('sqlite:///')[-1])
     c = conn.cursor()
     try:
         # Insert the transcription into the transcriptions table
@@ -41,7 +47,8 @@ def save_transcription(filename, transcript, language="en"):
 
 def get_transcriptions():
     # Connect to the SQLite database
-    conn = sqlite3.connect(DATABASE_NAME)
+    print(DATABASE_URL.split('sqlite:///')[-1])
+    conn = sqlite3.connect(DATABASE_URL.split('sqlite:///')[-1])
     cursor = conn.cursor()
 
     try:
@@ -61,7 +68,7 @@ def get_transcriptions():
 
 def search_transcriptions(query):
     # Connect to the SQLite database
-    conn = sqlite3.connect(DATABASE_NAME)
+    conn = sqlite3.connect(DATABASE_URL.split('sqlite:///')[-1])
     cursor = conn.cursor()
     try:
         # Select records from the transcriptions table where the filename matches the query
@@ -80,7 +87,7 @@ def search_transcriptions(query):
 
 def delete_transcription(query):
     # Connect to the SQLite database
-    conn = sqlite3.connect(DATABASE_NAME)
+    conn = sqlite3.connect(DATABASE_URL.split('sqlite:///')[-1])
     cursor = conn.cursor()
     try:
         # Delete records from the transcriptions table where the filename matches the query

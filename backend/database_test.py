@@ -1,7 +1,7 @@
 import os
 import sqlite3
 import unittest
-from database import load_database, save_transcription, DATABASE_NAME
+from database import load_database, save_transcription, DATABASE_URL
 
 class TestDatabase(unittest.TestCase):
     def setUp(self):
@@ -10,12 +10,12 @@ class TestDatabase(unittest.TestCase):
 
     def tearDown(self):
         # Remove the database file after tests
-        if os.path.exists(DATABASE_NAME):
-            os.remove(DATABASE_NAME)
+        if os.path.exists(DATABASE_URL.split('sqlite:///')[-1]):
+            os.remove(DATABASE_URL.split('sqlite:///')[-1])
 
     def test_load_database_creates_table(self):
         # Connect to the database
-        conn = sqlite3.connect(DATABASE_NAME)
+        conn = sqlite3.connect(DATABASE_URL.split('sqlite:///')[-1])
         c = conn.cursor()
         # Check if the transcriptions table exists
         c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='transcriptions'")
@@ -29,7 +29,7 @@ class TestDatabase(unittest.TestCase):
         # Save a transcription
         save_transcription('testfile.wav', 'This is a test transcript', 'en')
         # Connect to the database
-        conn = sqlite3.connect(DATABASE_NAME)
+        conn = sqlite3.connect(DATABASE_URL.split('sqlite:///')[-1])
         c = conn.cursor()
         # Check if the transcription was saved
         c.execute("SELECT * FROM transcriptions WHERE filename='testfile.wav'")
@@ -43,7 +43,7 @@ class TestDatabase(unittest.TestCase):
         # Save a transcription
         save_transcription('testfile.wav', 'This is a test transcript', 'en')
         # Connect to the database
-        conn = sqlite3.connect(DATABASE_NAME)
+        conn = sqlite3.connect(DATABASE_URL.split('sqlite:///')[-1])
         c = conn.cursor()
         # Delete the transcription
         c.execute("DELETE FROM transcriptions WHERE filename='testfile.wav'")
