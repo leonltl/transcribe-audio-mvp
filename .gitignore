@@ -37,5 +37,4 @@ backend/.venv/
 backend/.env
 backend/__pycache__
 backend/data
-
-data/*
+data
